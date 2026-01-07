@@ -1,0 +1,17 @@
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: 'test',
+  testRegex: '.*\\.e2e-spec\\.ts$',
+  transform: {
+    '^.+\\.(t|j)s$': 'ts-jest',
+  },
+  collectCoverageFrom: ['**/*.(t|j)s'],
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/../src/$1',
+  },
+};
+
+export default config;
