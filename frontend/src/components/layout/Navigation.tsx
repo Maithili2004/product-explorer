@@ -22,6 +22,16 @@ export function Navigation() {
             Home
           </Link>
           <Link
+            href="/products"
+            className={`${
+              pathname === '/products'
+                ? 'text-blue-600 font-bold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Products
+          </Link>
+          <Link
             href="/about"
             className={`${
               pathname === '/about'
@@ -30,6 +40,16 @@ export function Navigation() {
             }`}
           >
             About
+          </Link>
+          <Link
+            href="/contact"
+            className={`${
+              pathname === '/contact'
+                ? 'text-blue-600 font-bold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Contact
           </Link>
         </div>
       </div>

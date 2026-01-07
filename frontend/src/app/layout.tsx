@@ -5,9 +5,14 @@ import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'Product Data Explorer',
-  description: 'Explore products from World of Books with advanced filtering and recommendations',
-  keywords: ['books', 'products', 'explore', 'world of books'],
+  description: 'Explore products from World of Books with advanced filtering and recommendations. Responsive, accessible product discovery platform.',
+  keywords: ['books', 'products', 'explore', 'world of books', 'shopping'],
   authors: [{ name: 'Product Explorer Team' }],
+  openGraph: {
+    title: 'Product Data Explorer',
+    description: 'Discover and explore products easily',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

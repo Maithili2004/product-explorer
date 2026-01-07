@@ -89,3 +89,24 @@ export function useRelatedProducts(productId: string, limit: number = 5) {
 
   return { related: data, isLoading, error, mutate };
 }
+
+export function useAllProducts(limit: number = 12, offset: number = 0) {
+  const key = `/products?limit=${limit}&offset=${offset}`;
+
+  const { data, error, isLoading, mutate } = useSWR<Product[]>(
+    key,
+    () => apiClient.getProducts(undefined, limit, offset).then((response) => {
+      if (Array.isArray(response)) {
+        return response;
+      }
+      return response?.items || [];
+    }),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      dedupingInterval: 30000,
+    },
+  );
+
+  return { products: data, isLoading, error, mutate };
+}
