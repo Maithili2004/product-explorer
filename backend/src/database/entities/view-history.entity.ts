@@ -10,13 +10,13 @@ export class ViewHistory {
   @Column({ type: 'varchar', length: 255, nullable: true })
   sessionId?: string;
 
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'text' })
   pathJson!: Record<string, any>;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   referrer?: string;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'text', nullable: true })
   metadata?: Record<string, any>;
 
   @CreateDateColumn()

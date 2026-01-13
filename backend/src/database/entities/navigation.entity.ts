@@ -23,7 +23,7 @@ export class Navigation {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   lastScrapedAt?: Date;
 
   @OneToMany(() => Category, (category: Category) => category.navigation)

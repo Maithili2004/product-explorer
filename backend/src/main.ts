@@ -3,6 +3,14 @@ import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
+// Keep process alive
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+});
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection:', err);
+});
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -31,9 +39,12 @@ async function bootstrap() {
   app.setGlobalPrefix(`${process.env.API_PREFIX || 'api'}/${process.env.API_VERSION || 'v1'}`);
 
   const port = process.env.PORT || 3001;
-  await app.listen(port);
-
-  console.log(`🚀 Server is running on http://localhost:${port}`);
+  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+  const server = await app.listen(port, host);
+  console.log(`🚀 Server is running on http://${host}:${port}`);
+  
+  // Keep the process alive
+  setInterval(() => {}, 1000 * 60 * 60); // Keep alive for hours
 }
 
 bootstrap().catch((err) => {

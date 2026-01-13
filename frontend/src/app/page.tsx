@@ -19,6 +19,24 @@ export default function Home() {
     });
   };
 
+  const triggerScraper = async () => {
+    setScraping(true);
+    try {
+      const response = await fetch('http://localhost:3001/api/v1/scraping/world-of-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      alert(`✅ Scraper started!\n\nProducts fetched: ${data.productCount || 0}\nStatus: ${data.source || 'unknown'}`);
+      // Reload page to show new products
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (err) {
+      alert(`❌ Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setScraping(false);
+    }
+  };
+
   if (error) {
     return (
       <div className="text-center py-12">
@@ -42,7 +60,14 @@ export default function Home() {
         <p className="text-xl mb-8">
           Discover and explore products from World of Books
         </p>
-        <p className="text-lg opacity-90">Browse thousands of products with advanced search and filtering</p>
+        <p className="text-lg opacity-90 mb-6">Browse thousands of products with advanced search and filtering</p>
+        <button
+          onClick={triggerScraper}
+          disabled={scraping}
+          className="px-8 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          {scraping ? '🔄 Scraping...' : '🌐 Fetch Live Products'}
+        </button>
       </section>
 
       {/* Navigation Headings */}

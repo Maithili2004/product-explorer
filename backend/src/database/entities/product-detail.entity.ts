@@ -20,7 +20,7 @@ export class ProductDetail {
   @Column({ type: 'integer', default: 0 })
   reviewsCount!: number;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'text', nullable: true })
   specs?: Record<string, any>;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -38,7 +38,7 @@ export class ProductDetail {
   @Column({ type: 'integer', nullable: true })
   pages?: number;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'text', nullable: true })
   metadata?: Record<string, any>;
 
   @CreateDateColumn()

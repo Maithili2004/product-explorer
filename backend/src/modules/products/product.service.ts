@@ -18,31 +18,34 @@ export class ProductService {
 
   async findAll(
     categoryId?: string,
-    limit: number = 20,
-    offset: number = 0,
+    limit?: number | string,
+    offset?: number | string,
   ) {
     try {
-      const query = this.productRepository.createQueryBuilder('product');
+      // Parse and validate limit and offset
+      const parsedLimit = limit ? parseInt(String(limit), 10) : 20;
+      const parsedOffset = offset ? parseInt(String(offset), 10) : 0;
+      
+      const safeLimit = isNaN(parsedLimit) ? 20 : parsedLimit;
+      const safeOffset = isNaN(parsedOffset) ? 0 : parsedOffset;
 
-      if (categoryId) {
-        query.where('product.categoryId = :categoryId', { categoryId });
-      }
+      this.logger.log(`Fetching products... limit=${safeLimit}, offset=${safeOffset}`);
+      
+      const products = await this.productRepository.find({
+        order: { createdAt: 'DESC' },
+        skip: safeOffset,
+        take: safeLimit,
+      });
+      
+      const total = await this.productRepository.count();
+      this.logger.log(`Found ${total} products in database, returning ${products.length}`);
 
-      const [products, total] = await Promise.all([
-        query
-          .leftJoinAndSelect('product.details', 'details')
-          .orderBy('product.createdAt', 'DESC')
-          .skip(offset)
-          .take(limit)
-          .getMany(),
-        query.getCount(),
-      ]);
-
-      return { data: products, total, limit, offset };
+      return { data: products, total, limit: safeLimit, offset: safeOffset };
     } catch (error) {
-      // Return empty array if table doesn't exist yet
-      this.logger.warn('Product table not found, returning empty array');
-      return { data: [], total: 0, limit, offset };
+      const errMsg = error instanceof Error ? error.message : String(error);
+      this.logger.error('Error getting products: ' + errMsg);
+      console.error('Full error:', error);
+      return { data: [], total: 0, limit: 20, offset: 0 };
     }
   }
 

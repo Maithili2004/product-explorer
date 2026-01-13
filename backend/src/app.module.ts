@@ -36,16 +36,37 @@ import { APP_FILTER } from '@nestjs/core';
       },
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'postgres' as const,
-        url: process.env.DATABASE_URL,
-        entities: [
-          'dist/database/entities/**/*.entity.js',
-        ],
-        synchronize: false,
-        logging: false,
-        ssl: { rejectUnauthorized: false },
-      }),
+      useFactory: () => {
+        // Use SQLite for development/testing if PostgreSQL not available
+        const useSQLite = process.env.NODE_ENV !== 'production' && !process.env.DATABASE_URL?.includes('postgresql');
+        
+        if (useSQLite) {
+          const path = require('path');
+          // Use absolute path to ensure consistency
+          const dbPath = 'C:/Users/User/Desktop/internshala_project/backend/data/product_explorer.db';
+          const entitiesPath = path.join(__dirname, 'database', 'entities', '*.entity.js');
+          console.log('Using SQLite database at:', dbPath);
+          console.log('Entities path:', entitiesPath);
+          return {
+            type: 'sqlite' as const,
+            database: dbPath,
+            entities: [entitiesPath],
+            synchronize: true,
+            logging: false,
+          };
+        }
+        
+        const path = require('path');
+        const entitiesPath = path.join(__dirname, 'database', 'entities', '*.entity.js');
+        return {
+          type: 'postgres' as const,
+          url: process.env.DATABASE_URL,
+          entities: [entitiesPath],
+          synchronize: true,
+          logging: false,
+          ssl: { rejectUnauthorized: false },
+        };
+      },
     }),
     // BullModule commented out for local testing - Redis not configured
     // BullModule.forRoot({

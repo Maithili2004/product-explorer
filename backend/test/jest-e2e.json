@@ -1,17 +1,13 @@
-import type { Config } from '@jest/types';
-
-const config: Config.InitialOptions = {
-  moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'test',
-  testRegex: '.*\\.e2e-spec\\.ts$',
-  transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": ".",
+  "testRegex": ".*\\.e2e-spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": ["ts-jest", { "tsconfig": "tsconfig.spec.json" }]
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
-  testEnvironment: 'node',
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/../src/$1',
-  },
-};
-
-export default config;
+  "collectCoverageFrom": ["**/*.(t|j)s"],
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/../src/$1"
+  }
+}

@@ -34,7 +34,7 @@ export class Category {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   lastScrapedAt?: Date;
 
   @ManyToOne(() => Navigation, (nav: Navigation) => nav.categories)

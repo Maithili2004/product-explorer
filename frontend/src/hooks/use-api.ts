@@ -99,7 +99,7 @@ export function useAllProducts(limit: number = 12, offset: number = 0) {
       if (Array.isArray(response)) {
         return response;
       }
-      return response?.items || [];
+      return response?.data || [];
     }),
     {
       revalidateOnFocus: false,

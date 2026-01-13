@@ -7,14 +7,14 @@ import { Review } from './review.entity';
 @Index(['sourceId'], { unique: true })
 @Index(['categoryId'])
 @Index(['lastScrapedAt'])
-@Index(['sourceUrl'], { unique: true })
+@Index(['sourceUrl'])
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   @ForeignKey(() => Category)
-  categoryId!: string;
+  categoryId?: string;
 
   @Column({ type: 'varchar', length: 500 })
   title!: string;
@@ -31,7 +31,7 @@ export class Product {
   @Column({ type: 'varchar', length: 500, nullable: true })
   imageUrl?: string;
 
-  @Column({ type: 'varchar', length: 500, unique: true })
+  @Column({ type: 'varchar', length: 500 })
   sourceUrl!: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
@@ -46,7 +46,7 @@ export class Product {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   lastScrapedAt?: Date;
 
   @Column({ type: 'varchar', length: 64, nullable: true })

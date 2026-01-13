@@ -26,10 +26,10 @@ export class ScrapeJob {
   @Column({ type: 'varchar', length: 500 })
   targetUrl!: string;
 
-  @Column({ type: 'enum', enum: ScrapeTargetType })
+  @Column({ type: 'varchar', length: 50 })
   targetType!: ScrapeTargetType;
 
-  @Column({ type: 'enum', enum: ScrapeJobStatus, default: ScrapeJobStatus.PENDING })
+  @Column({ type: 'varchar', length: 50, default: ScrapeJobStatus.PENDING })
   status!: ScrapeJobStatus;
 
   @Column({ type: 'integer', default: 0 })
@@ -38,16 +38,16 @@ export class ScrapeJob {
   @Column({ type: 'text', nullable: true })
   errorLog?: string;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'text', nullable: true })
   metadata?: Record<string, any>;
 
   @CreateDateColumn()
   createdAt!: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   startedAt?: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   finishedAt?: Date;
 
   @UpdateDateColumn()
