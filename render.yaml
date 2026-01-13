@@ -2,31 +2,31 @@ services:
   # Backend API
   - type: web
     name: product-explorer-api
-    env: node
+    runtime: node
     region: oregon
     plan: free
-    buildCommand: cd backend && npm install && npm run build
-    startCommand: cd backend && npm run start
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
+        value: 10000
       - key: CORS_ORIGIN
         value: https://product-explorer-frontend.onrender.com
       - key: JWT_SECRET
         generateValue: true
-      - key: DATABASE_PATH
-        value: /opt/render/project/src/backend/data/product_explorer.db
 
   # Frontend
   - type: web
     name: product-explorer-frontend
-    env: node
+    runtime: node
     region: oregon
     plan: free
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run start
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
